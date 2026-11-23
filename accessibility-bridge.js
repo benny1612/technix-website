@@ -1,6 +1,7 @@
 'use strict';
 (function(){
  const root=document.documentElement;
+ const dock=document.createElement('style');dock.textContent='@media(max-width:660px){html{scroll-padding-bottom:100px}body{padding-bottom:80px}.asw-widget::before{content:"";position:fixed;inset:auto 0 0;height:76px;background:#f3f4ee;border-top:1px solid #ccd5d1;z-index:499999}.asw-menu-btn{bottom:16px!important}}';document.head.appendChild(dock);
  function settings(){try{return JSON.parse(localStorage.getItem('asw-user-settings')||'{}')}catch(e){try{let c=document.cookie.split('; ').find(c=>c.startsWith('asw-user-settings='));return c?JSON.parse(decodeURIComponent(c.split('=').slice(1).join('='))):{}}catch(e){return {}}}}
  function motion(data){window.technixMotionStopped=!!data?.states?.['stop-animations'];root.classList.toggle('technix-motion-off',window.technixMotionStopped)}
  motion(settings());window.addEventListener('technix-accessibility',e=>motion(e.detail));window.addEventListener('storage',()=>motion(settings()));
