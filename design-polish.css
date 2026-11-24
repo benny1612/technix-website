@@ -30,3 +30,6 @@ main.legal-page{max-width:760px;padding-top:44px}main.legal-page h1{font-size:cl
 
 /* Plain, mirrored review arrows with equal geometry and full touch targets. */
 .reviews-controls button{border:0;border-radius:0;padding:12px;display:inline-flex;align-items:center;justify-content:center;flex:0 0 48px;background:transparent}.reviews-controls button::before{content:"";display:block;width:24px;height:24px;background:currentColor;clip-path:polygon(0 45%,68% 45%,41% 18%,49% 10%,90% 50%,49% 90%,41% 82%,68% 55%,0 55%)}.reviews-controls button[data-review-next]::before{transform:scaleX(-1)}.reviews-controls button{font-size:0}.reviews-controls button:focus-visible{outline:3px solid var(--orange);outline-offset:3px}
+
+/* Continue each photograph through the lightning while keeping the original mark above. */
+.brand-photo-window{mask-image:url("/technix-photo-mask.svg"),url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 384 384%27%3E%3Cpath d=%27M243 48L235 168L287 181L155 364L177 226L126 211Z%27/%3E%3C/svg%3E");-webkit-mask-image:url("/technix-photo-mask.svg"),url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 384 384%27%3E%3Cpath d=%27M243 48L235 168L287 181L155 364L177 226L126 211Z%27/%3E%3C/svg%3E")}
