@@ -183,19 +183,19 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 @keyframes tx-bulb-pull{50%{transform:translateY(3px)}100%{transform:translateY(0)}}
 @media(min-width:1151px){.site-header{gap:18px}.tx-theme-toggle{order:4}}
 @media(max-width:1150px){.tx-theme-toggle{position:absolute;left:63px;top:50%;transform:translateY(-50%)}.site-header>.brand{max-width:calc(100% - 92px)}}
-html[data-tx-theme=dark]{--paper:#172d32;--ink:#eef2e9;--blue:#8cbfda;--orange:#e1a483;--muted:#bdcecb;--rule:#4d666a;--light:#203a40;--white:#213b40}
+html[data-tx-theme=dark]{--paper:#17212f;--ink:#f0f5fc;--blue:#9ccfff;--orange:#9ccfff;--muted:#c0cede;--rule:#465970;--light:#202e42;--white:#24344a}
 html[data-tx-theme=dark] .tx-bulb-filament{stroke:#e3c27a;stroke-width:2}
 html[data-tx-theme=dark] .tx-bulb-lit{stroke:#e3c27a;opacity:1}
 html[data-tx-theme=dark] .site-header .brand img{mix-blend-mode:normal;filter:brightness(2.1) saturate(.55)}
-html[data-tx-theme=dark] .site-header.is-scrolled::before{background:linear-gradient(to bottom,rgba(32,58,64,.86),rgba(32,58,64,.82) 52%,rgba(32,58,64,.66) 68%,rgba(32,58,64,.34) 83%,rgba(32,58,64,0))}
-html[data-tx-theme=dark] .review-bar{background:#0e2429;color:#eef2e9}
-html[data-tx-theme=dark] .audience{background:#0e2429;color:#eef2e9}
+html[data-tx-theme=dark] .site-header.is-scrolled::before{background:linear-gradient(to bottom,rgba(32,46,66,.86),rgba(32,46,66,.82) 52%,rgba(32,46,66,.66) 68%,rgba(32,46,66,.34) 83%,rgba(32,46,66,0))}
+html[data-tx-theme=dark] .review-bar{background:#101a28;color:#f0f5fc}
+html[data-tx-theme=dark] .audience{background:#101a28;color:#f0f5fc}
 html[data-tx-theme=dark] .reviews,html[data-tx-theme=dark] .contact{background:var(--light)}
 html[data-tx-theme=dark] .review-card{background:var(--paper);border-color:var(--rule)}
 html[data-tx-theme=dark] .review-card,html[data-tx-theme=dark] .review-card p,html[data-tx-theme=dark] .review-meta,html[data-tx-theme=dark] .review-date{color:var(--ink)}
 html[data-tx-theme=dark] .client-card{background:transparent}
 html[data-tx-theme=dark] .client-card img{border-radius:3px}
-html[data-tx-theme=dark] .mobile-contact{background:rgba(23,45,50,.95);border-color:var(--rule)}
+html[data-tx-theme=dark] .mobile-contact{background:rgba(23,33,47,.95);border-color:var(--rule)}
 html[data-tx-theme=dark] .mobile-contact a{color:var(--ink);border-color:var(--ink)}
 html[data-tx-theme=dark] .mobile-contact a:first-child{background:var(--ink);color:var(--paper)}
 html[data-tx-theme=dark] #contact-form input,html[data-tx-theme=dark] #contact-form textarea{border-color:var(--rule)}
@@ -216,10 +216,14 @@ html[data-tx-theme=dark] .eyebrow{color:var(--orange)}
 html[data-tx-theme=dark] .meta,html[data-tx-theme=dark] figcaption,html[data-tx-theme=dark] .small{color:var(--muted)}
 html[data-tx-theme=dark] .notice,html[data-tx-theme=dark] .toc,html[data-tx-theme=dark] .card{background:var(--light);color:var(--ink);border-color:var(--rule)}
 html[data-tx-theme=dark] body.tx-guides main .card a{color:var(--ink)}
-html[data-tx-theme=dark] .cta{background:#0e2429;color:var(--ink)}
+html[data-tx-theme=dark] .cta{background:#101a28;color:var(--ink)}
 html[data-tx-theme=dark] body.tx-article main .cta a{background:var(--ink);color:var(--paper);border-color:var(--ink)}
 html[data-tx-theme=dark] .site-footer .brand img{mix-blend-mode:normal;filter:brightness(2.1) saturate(.55)}
 html[data-tx-theme=dark] body.tx-article .cta h2,html[data-tx-theme=dark] body.tx-article .cta p{color:var(--ink)}
 /* Keep both controls on the first row when the mobile navigation expands. */
 @media(max-width:1150px){.site-header .menu-button,.js .site-header .menu-button,.tx-theme-toggle{top:39.275px}}
 html[data-tx-theme=dark] .site-header .header-phone{color:var(--paper)}
+/* Draw the menu lines inside a centred box instead of using a font baseline. */
+@media(max-width:1150px){.site-header .menu-button span[aria-hidden=true]{display:block;width:20px;height:24px;font-size:0;line-height:0;background:linear-gradient(currentColor,currentColor) center 4px/20px 1.7px no-repeat,linear-gradient(currentColor,currentColor) center 11px/20px 1.7px no-repeat,linear-gradient(currentColor,currentColor) center 18px/20px 1.7px no-repeat}}
+
+@media(max-width:1150px){.site-header .menu-button,.js .site-header .menu-button{top:29.275px}}
