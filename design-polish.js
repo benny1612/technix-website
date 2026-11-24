@@ -30,7 +30,7 @@
   const cards=[...rail.querySelectorAll('.review-card')],back=document.querySelector('[data-review-prev]'),next=document.querySelector('[data-review-next]'),status=document.querySelector('.reviews-status');
   const visibleCount=()=>matchMedia('(max-width:760px)').matches?1:3;
   const index=()=>{const edge=rail.getBoundingClientRect().right;let best=0,distance=Infinity;cards.forEach((card,i)=>{const d=Math.abs(card.getBoundingClientRect().right-edge);if(d<distance){distance=d;best=i;}});return best;};
-  const update=()=>{const i=index();back.disabled=i===0;next.disabled=i>=cards.length-visibleCount();status.textContent=`${i+1} מתוך ${cards.length}`;};
+  const update=()=>{const i=index();back.disabled=i===0;next.disabled=i>=cards.length-visibleCount();const end=Math.min(cards.length,i+visibleCount());status.textContent=end===i+1?`ביקורת ${i+1} מתוך ${cards.length}`:`ביקורות ${i+1} עד ${end} מתוך ${cards.length}`;};
   const go=step=>{const i=Math.max(0,Math.min(cards.length-visibleCount(),index()+step));const delta=cards[i].getBoundingClientRect().right-rail.getBoundingClientRect().right;rail.scrollBy({left:delta,behavior:matchMedia('(prefers-reduced-motion:reduce)').matches||window.technixMotionStopped?'instant':'smooth'});};
   back.addEventListener('click',()=>go(-1));next.addEventListener('click',()=>go(1));
   rail.addEventListener('scroll',update,{passive:true});window.addEventListener('resize',update);update();
