@@ -27,3 +27,6 @@ main.legal-page{max-width:760px;padding-top:44px}main.legal-page h1{font-size:cl
 
 @media(scripting:none) and (max-width:1150px){.site-header nav{display:flex}.site-header .menu-button{display:none}}
 @media(max-width:319px){.hero-actions{grid-template-columns:1fr}.mobile-contact:not([hidden]){gap:6px;padding-inline:8px}.mobile-contact a{font-size:12px;padding-inline:6px}.client-grid{grid-template-columns:1fr}.review-card{padding:16px}.site-header{padding-inline:12px}.site-header .brand strong{font-size:23px}.site-header .brand img{width:28px;height:28px}.hero h1{font-size:28px}.site-footer .brand{gap:6px}}
+
+/* Plain, mirrored review arrows with equal geometry and full touch targets. */
+.reviews-controls button{border:0;border-radius:0;padding:12px;display:inline-flex;align-items:center;justify-content:center;flex:0 0 48px;background:transparent}.reviews-controls button::before{content:"";display:block;width:24px;height:24px;background:currentColor;clip-path:polygon(0 45%,68% 45%,41% 18%,49% 10%,90% 50%,49% 90%,41% 82%,68% 55%,0 55%)}.reviews-controls button[data-review-next]::before{transform:scaleX(-1)}.reviews-controls button{font-size:0}.reviews-controls button:focus-visible{outline:3px solid var(--orange);outline-offset:3px}
