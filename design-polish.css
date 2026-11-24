@@ -169,6 +169,5 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 .faq-list details[open] .faq-icon,.faq details[open] .faq-icon{transform:rotate(45deg)}
 @media(prefers-reduced-motion:reduce){.faq-icon{transition:none}}
 
-/* A brief, reversible slide for both entrance and exit of the mobile contact bar. */
-@media(max-width:760px){.mobile-contact:not([hidden]){transform:translateY(100%);opacity:0;transition:transform .3s cubic-bezier(.2,.7,.3,1),opacity .3s ease;pointer-events:none}.mobile-contact.is-visible:not([hidden]){transform:translateY(0);opacity:1;pointer-events:auto}}
-@media(prefers-reduced-motion:reduce){.mobile-contact:not([hidden]){transition:none}}
+/* The mobile contact bar follows scroll position, with no timed motion. */
+@media(max-width:760px){.mobile-contact:not([hidden]){transform:translateY(var(--dock-offset,100%));transition:none;pointer-events:none}.mobile-contact.is-visible:not([hidden]){pointer-events:auto}}
