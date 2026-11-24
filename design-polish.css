@@ -175,3 +175,36 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 /* Mobile client marks take the desktop hover treatment in reading order as the page scrolls. */
 @media(max-width:760px){.client-card{transform:translateY(calc(-16px * var(--client-emphasis,0)));transition:none}.client-card img{filter:drop-shadow(0 12px 9px rgb(0 0 0 / calc(.5 * var(--client-emphasis,0)))) drop-shadow(0 3px 2px rgb(0 0 0 / calc(.18 * var(--client-emphasis,0)))) ;transition:none}}
 @media(max-width:760px) and (prefers-reduced-motion:reduce){.client-card{transform:none}}
+
+/* Compact bulb switch, drawn for Technix. */
+.tx-theme-toggle{display:inline-grid;place-items:center;flex:none;width:44px;height:44px;padding:8px;border:0;background:transparent;color:var(--ink);cursor:pointer;border-radius:0}
+.tx-theme-toggle svg{display:block;overflow:visible}.tx-bulb-lit{opacity:0}.tx-bulb-filament{transition:stroke .15s ease}
+.tx-theme-toggle.is-pulling svg{animation:tx-bulb-pull .15s ease-out}
+@keyframes tx-bulb-pull{50%{transform:translateY(3px)}100%{transform:translateY(0)}}
+@media(min-width:1151px){.site-header{gap:18px}.tx-theme-toggle{order:4}}
+@media(max-width:1150px){.tx-theme-toggle{position:absolute;left:63px;top:50%;transform:translateY(-50%)}.site-header>.brand{max-width:calc(100% - 92px)}}
+html[data-tx-theme=dark]{--paper:#172d32;--ink:#eef2e9;--blue:#8cbfda;--orange:#e1a483;--muted:#bdcecb;--rule:#4d666a;--light:#203a40;--white:#213b40}
+html[data-tx-theme=dark] .tx-bulb-filament{stroke:#e3c27a;stroke-width:2}
+html[data-tx-theme=dark] .tx-bulb-lit{stroke:#e3c27a;opacity:1}
+html[data-tx-theme=dark] .site-header .brand img{mix-blend-mode:normal;filter:brightness(2.1) saturate(.55)}
+html[data-tx-theme=dark] .site-header.is-scrolled::before{background:linear-gradient(to bottom,rgba(32,58,64,.86),rgba(32,58,64,.82) 52%,rgba(32,58,64,.66) 68%,rgba(32,58,64,.34) 83%,rgba(32,58,64,0))}
+html[data-tx-theme=dark] .review-bar{background:#0e2429;color:#eef2e9}
+html[data-tx-theme=dark] .audience{background:#0e2429;color:#eef2e9}
+html[data-tx-theme=dark] .reviews,html[data-tx-theme=dark] .contact{background:var(--light)}
+html[data-tx-theme=dark] .review-card{background:var(--paper);border-color:var(--rule)}
+html[data-tx-theme=dark] .review-card,html[data-tx-theme=dark] .review-card p,html[data-tx-theme=dark] .review-meta,html[data-tx-theme=dark] .review-date{color:var(--ink)}
+html[data-tx-theme=dark] .client-card{background:transparent}
+html[data-tx-theme=dark] .client-card img{border-radius:3px}
+html[data-tx-theme=dark] .mobile-contact{background:rgba(23,45,50,.95);border-color:var(--rule)}
+html[data-tx-theme=dark] .mobile-contact a{color:var(--ink);border-color:var(--ink)}
+html[data-tx-theme=dark] .mobile-contact a:first-child{background:var(--ink);color:var(--paper)}
+html[data-tx-theme=dark] #contact-form input,html[data-tx-theme=dark] #contact-form textarea{border-color:var(--rule)}
+html[data-tx-theme=dark] .gallery-controls button,html[data-tx-theme=dark] .reviews-controls button{color:var(--ink)}
+html[data-tx-theme=dark] .reviews-controls button::before{background:var(--ink)}
+@media(prefers-reduced-motion:reduce){.tx-theme-toggle.is-pulling svg{animation:none}.tx-bulb-filament{transition:none}}
+html.asw-no-animations .tx-theme-toggle svg,body.asw-no-animations .tx-theme-toggle svg{animation:none!important}
+@media print{.tx-theme-toggle{display:none}}
+@media(max-width:1150px){.site-header .menu-button,.js .site-header .menu-button{width:44px;justify-content:center;justify-self:end}.tx-theme-toggle{left:64px}}
+html[data-tx-theme=dark] .client-card:nth-child(2) img{filter:brightness(1.7)}
+@media(max-width:1150px){.site-header .menu-button,.js .site-header .menu-button{position:absolute;left:20px;top:50%;transform:translateY(-50%);width:44px;padding:0}}
+@media(max-width:1150px){.site-header{min-height:78.55px}.tx-theme-toggle{left:76px}.site-header>.brand{max-width:calc(100% - 104px)}}
