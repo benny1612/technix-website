@@ -23,7 +23,17 @@
   dock.classList.toggle('is-visible',progress===1);
   document.documentElement.classList.toggle('tx-dock-visible',progress>0);
  }
- function queueDock(){if(dockFrame)return;dockFrame=requestAnimationFrame(()=>{dockFrame=0;syncDock();});}
+ const clientSection=document.querySelector('.clients'),clientCards=[...document.querySelectorAll('.client-card')];
+ function syncClientLogos(){
+  const mobile=matchMedia('(max-width:760px)').matches;
+  const phase=clientSection?(innerHeight*.5-clientSection.getBoundingClientRect().top)/90:0;
+  clientCards.forEach((card,index)=>{
+   const emphasis=mobile?Math.max(0,1-Math.abs(phase-index)):0;
+   const value=emphasis.toFixed(4);
+   if(card.style.getPropertyValue('--client-emphasis')!==value)card.style.setProperty('--client-emphasis',value);
+  });
+ }
+ function queueDock(){if(dockFrame)return;dockFrame=requestAnimationFrame(()=>{dockFrame=0;syncDock();syncClientLogos();});}
  window.addEventListener('scroll',queueDock,{passive:true});window.addEventListener('resize',queueDock);
  matchMedia('(prefers-reduced-motion:reduce)').addEventListener('change',queueDock);
  if(menu)new MutationObserver(syncDock).observe(menu,{attributes:true,attributeFilter:['aria-expanded']});
@@ -32,7 +42,7 @@
  // The widget is inserted after load; style changes tell us when its dialog opens.
  const widgetObserver=new MutationObserver(syncDock);
  widgetObserver.observe(document.body,{subtree:true,childList:true,attributes:true,attributeFilter:['style']});
- syncDock();
+ syncDock();syncClientLogos();
  const rail=document.querySelector('.reviews-window');
  if(rail){
   const cards=[...rail.querySelectorAll('.review-card')],back=document.querySelector('[data-review-prev]'),next=document.querySelector('[data-review-next]'),status=document.querySelector('.reviews-status');
