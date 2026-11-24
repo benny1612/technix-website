@@ -168,3 +168,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 .faq-list details[open],.faq details[open]{background:transparent}
 .faq-list details[open] .faq-icon,.faq details[open] .faq-icon{transform:rotate(45deg)}
 @media(prefers-reduced-motion:reduce){.faq-icon{transition:none}}
+
+/* The mobile contact bar enters with a brief, quiet upward movement. */
+@keyframes tx-contact-rise{from{transform:translateY(100%);opacity:.65}to{transform:translateY(0);opacity:1}}
+@media(max-width:760px) and (prefers-reduced-motion:no-preference){.mobile-contact:not([hidden]){animation:tx-contact-rise .18s cubic-bezier(.2,.7,.3,1) both}}
