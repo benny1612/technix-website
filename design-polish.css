@@ -173,5 +173,5 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 @media(max-width:760px){.mobile-contact:not([hidden]){transform:translateY(var(--dock-offset,100%));transition:none;pointer-events:none}.mobile-contact.is-visible:not([hidden]){pointer-events:auto}}
 
 /* Mobile client marks take the desktop hover treatment in reading order as the page scrolls. */
-@media(max-width:760px){.client-card{transform:translateY(calc(-4px * var(--client-emphasis,0)));transition:none}.client-card img{filter:drop-shadow(0 5px 5px rgb(0 0 0 / calc(.18 * var(--client-emphasis,0)))) ;transition:none}}
+@media(max-width:760px){.client-card{transform:translateY(calc(-16px * var(--client-emphasis,0)));transition:none}.client-card img{filter:drop-shadow(0 12px 9px rgb(0 0 0 / calc(.5 * var(--client-emphasis,0)))) drop-shadow(0 3px 2px rgb(0 0 0 / calc(.18 * var(--client-emphasis,0)))) ;transition:none}}
 @media(max-width:760px) and (prefers-reduced-motion:reduce){.client-card{transform:none}}
