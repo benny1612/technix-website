@@ -149,3 +149,9 @@ FROM, OUT OF THE USE OR INABILITY TO USE THE FONT SOFTWARE OR FROM
 OTHER DEALINGS IN THE FONT SOFTWARE.
 
 */
+
+/* Quiet hover feedback for client marks and review cards. */
+.client-card,.review-card{transition:transform .2s ease,background-color .2s ease}
+.reviews-window,.reviews.is-enhanced .reviews-window{padding-top:6px}
+@media(hover:hover) and (pointer:fine){.client-card:hover,.client-card:nth-child(2):hover{transform:translateY(-4px);background:rgba(0,0,0,.045)}.review-card:hover{transform:translateY(-4px)}}
+@media(prefers-reduced-motion:reduce){.client-card,.review-card{transition:none}.client-card:hover,.review-card:hover{transform:none}}
