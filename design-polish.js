@@ -4,7 +4,7 @@
  document.documentElement.classList.add('js');
  const menu=document.querySelector('.menu-button'),nav=document.querySelector('#navigation');
  const dock=document.querySelector('.mobile-contact');
- const primary=document.querySelector('.hero-actions')||document.querySelector('.site-header');
+ const primary=document.querySelector('.hero-actions')||document.querySelector('main h1');
  const contact=document.querySelector('#contact')||document.querySelector('.site-footer');
  let primarySeen=true,contactSeen=false;
  function syncDock(){
