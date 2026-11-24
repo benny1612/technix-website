@@ -6,14 +6,29 @@
  const dock=document.querySelector('.mobile-contact');
  const primary=document.querySelector('.hero-actions')||document.querySelector('main h1');
  const contact=document.querySelector('#contact')||document.querySelector('.site-footer');
- let primarySeen=true,contactSeen=false;
+ let primarySeen=true,contactSeen=false,dockTarget=false,dockTimer=0,dockFrame=0;
+ function setDockVisible(show){
+  if(!dock||show===dockTarget)return;
+  dockTarget=show;clearTimeout(dockTimer);cancelAnimationFrame(dockFrame);
+  const reduced=matchMedia('(prefers-reduced-motion:reduce)').matches;
+  dock.inert=!show;dock.setAttribute('aria-hidden',String(!show));
+  if(show){
+   const wasHidden=dock.hidden;dock.hidden=false;
+   if(wasHidden&&!reduced){void dock.offsetHeight;dockFrame=requestAnimationFrame(()=>{if(dockTarget)dock.classList.add('is-visible');});}
+   else dock.classList.add('is-visible');
+  }else{
+   dock.classList.remove('is-visible');
+   if(reduced)dock.hidden=true;
+   else dockTimer=setTimeout(()=>{if(!dockTarget)dock.hidden=true;},300);
+  }
+ }
  function syncDock(){
   if(!dock)return;
   const accessibility=document.querySelector('.asw-menu');
   const accessibilityOpen=accessibility&&accessibility.parentElement.style.display!=='none';
   const editing=/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName);
   const show=!primarySeen&&!contactSeen&&menu?.getAttribute('aria-expanded')!=='true'&&!accessibilityOpen&&!editing;
-  dock.hidden=!show;document.documentElement.classList.toggle('tx-dock-visible',show);
+  setDockVisible(show);document.documentElement.classList.toggle('tx-dock-visible',show);
  }
  if('IntersectionObserver' in window){
   const observer=new IntersectionObserver(entries=>{for(const e of entries){if(e.target===primary)primarySeen=e.isIntersecting;if(e.target===contact)contactSeen=e.isIntersecting;}syncDock();},{threshold:0});
