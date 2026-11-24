@@ -62,3 +62,19 @@
   if('IntersectionObserver' in window){const sectionObserver=new IntersectionObserver(entries=>{for(const e of entries)if(e.isIntersecting){document.querySelectorAll('#navigation a').forEach(a=>{const on=a.getAttribute('href')==='#'+e.target.id;if(on)a.setAttribute('aria-current','location');else a.removeAttribute('aria-current');});}},{rootMargin:'-15% 0px -60% 0px'});sections.forEach(s=>sectionObserver.observe(s));}
  }
 })();
+
+/* Original Technix bulb switch. Theme scope is separate from contact/logo preview work. */
+(function(){
+ const root=document.documentElement,header=document.querySelector('.site-header');if(!header)return;
+ const key='technix-theme';let saved=null;try{saved=localStorage.getItem(key)}catch(_){}
+ const system=matchMedia('(prefers-color-scheme:dark)');
+ const toggle=document.createElement('button');toggle.type='button';toggle.className='tx-theme-toggle';
+ toggle.innerHTML='<svg aria-hidden="true" width="24" height="28" viewBox="0 0 24 28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8.7 19.1c-.2-2.1-3.9-4.8-3.9-8.2a7.2 7.2 0 0 1 14.4 0c0 3.4-3.7 6.1-3.9 8.2M9 21.7h6M9.7 24.4h4.6M11 26h2"/><path class="tx-bulb-filament" d="M10 18.8v-5.5l-1.6-2 3.6 1.2 3.6-1.2-1.6 2v5.5"/><path class="tx-bulb-lit" d="M9 10.7h6"/></svg>';
+ header.append(toggle);
+ function apply(dark){root.dataset.txTheme=dark?'dark':'light';toggle.setAttribute('aria-pressed',String(dark));const label=dark?'מעבר למצב יום':'מעבר למצב לילה';toggle.setAttribute('aria-label',label);toggle.title=label;root.style.colorScheme=dark?'dark':'light';}
+ apply(saved==='dark'||(saved!=='light'&&system.matches));
+ toggle.addEventListener('click',()=>{const dark=root.dataset.txTheme!=='dark';apply(dark);saved=dark?'dark':'light';try{localStorage.setItem(key,saved)}catch(_){}toggle.classList.remove('is-pulling');void toggle.offsetWidth;toggle.classList.add('is-pulling');});
+ toggle.addEventListener('animationend',()=>toggle.classList.remove('is-pulling'));
+ system.addEventListener('change',e=>{if(saved!=='dark'&&saved!=='light')apply(e.matches)});
+ window.addEventListener('storage',e=>{if(e.key===key){saved=e.newValue;apply(saved==='dark'||(saved!=='light'&&system.matches))}});
+})();
