@@ -227,3 +227,6 @@ html[data-tx-theme=dark] .site-header .header-phone{color:var(--paper)}
 @media(max-width:1150px){.site-header .menu-button span[aria-hidden=true]{display:block;width:20px;height:24px;font-size:0;line-height:0;background:linear-gradient(currentColor,currentColor) center 4px/20px 1.7px no-repeat,linear-gradient(currentColor,currentColor) center 11px/20px 1.7px no-repeat,linear-gradient(currentColor,currentColor) center 18px/20px 1.7px no-repeat}}
 
 @media(max-width:1150px){.site-header .menu-button,.js .site-header .menu-button{top:29.275px}}
+/* Sections that are dark in both themes keep the same charcoal-blue surface. */
+html:not([data-tx-theme=dark]) .review-bar,html:not([data-tx-theme=dark]) .audience,html:not([data-tx-theme=dark]) body.tx-article .cta{background:#101a28;color:#f0f5fc}
+html:not([data-tx-theme=dark]) body.tx-article .cta h2,html:not([data-tx-theme=dark]) body.tx-article .cta p{color:#f0f5fc}
