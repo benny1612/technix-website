@@ -39,3 +39,6 @@ main.legal-page{max-width:760px;padding-top:44px}main.legal-page h1{font-size:cl
 
 /* Desktop reviews keep native scrolling without a visible scrollbar. */
 @media(min-width:769px){.reviews-window,.reviews.is-enhanced .reviews-window{scrollbar-width:none}.reviews-window::-webkit-scrollbar{display:none}}
+
+/* The header call button stays unadorned on hover. */
+.header-phone,.header-phone:hover,.header-phone:focus{ text-decoration:none }
