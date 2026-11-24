@@ -35,6 +35,8 @@
   back.addEventListener('click',()=>go(-1));next.addEventListener('click',()=>go(1));
   rail.addEventListener('scroll',update,{passive:true});window.addEventListener('resize',update);update();
  }
+ const phoneLabel=document.querySelector('.header-phone>span:not(.sr-only)');
+ if(phoneLabel)phoneLabel.textContent=phoneLabel.textContent.trim().replace(/:$/,'')+':';
  const active=document.querySelector('.site-header a[href="/guides"]');
  if(active&&/guides|electrical-fault|electrical-panel|energy-site|utility-inspection/.test(location.pathname))active.setAttribute('aria-current','page');
  if(location.pathname==='/'||location.pathname.endsWith('/index.html')){
