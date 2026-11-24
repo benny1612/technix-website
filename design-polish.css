@@ -36,3 +36,6 @@ main.legal-page{max-width:760px;padding-top:44px}main.legal-page h1{font-size:cl
 
 /* Close the original open upper lightning tip. */
 .brand-scene::after{content:"";position:absolute;inset:0;pointer-events:none;background:url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 384 384%27%3E%3Cpath d=%27M237 46L252 24L248 57%27 fill=%27none%27 stroke=%27%234b5b6c%27 stroke-width=%271.2%27 stroke-linejoin=%27miter%27 stroke-miterlimit=%2710%27/%3E%3C/svg%3E") center/contain no-repeat}
+
+/* Desktop reviews keep native scrolling without a visible scrollbar. */
+@media(min-width:769px){.reviews-window,.reviews.is-enhanced .reviews-window{scrollbar-width:none}.reviews-window::-webkit-scrollbar{display:none}}
