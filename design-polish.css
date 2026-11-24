@@ -208,3 +208,15 @@ html.asw-no-animations .tx-theme-toggle svg,body.asw-no-animations .tx-theme-tog
 html[data-tx-theme=dark] .client-card:nth-child(2) img{filter:brightness(1.7)}
 @media(max-width:1150px){.site-header .menu-button,.js .site-header .menu-button{position:absolute;left:20px;top:50%;transform:translateY(-50%);width:44px;padding:0}}
 @media(max-width:1150px){.site-header{min-height:78.55px}.tx-theme-toggle{left:76px}.site-header>.brand{max-width:calc(100% - 104px)}}
+/* Article and policy pages also contain older fixed colour values. */
+html[data-tx-theme=dark] body{background:var(--paper);color:var(--ink)}
+html[data-tx-theme=dark] body.tx-article main a,html[data-tx-theme=dark] body.tx-guides main a,html[data-tx-theme=dark] main.legal-page a{color:var(--blue)}
+html[data-tx-theme=dark] .site-header a,html[data-tx-theme=dark] .site-footer a{color:var(--ink)}
+html[data-tx-theme=dark] .eyebrow{color:var(--orange)}
+html[data-tx-theme=dark] .meta,html[data-tx-theme=dark] figcaption,html[data-tx-theme=dark] .small{color:var(--muted)}
+html[data-tx-theme=dark] .notice,html[data-tx-theme=dark] .toc,html[data-tx-theme=dark] .card{background:var(--light);color:var(--ink);border-color:var(--rule)}
+html[data-tx-theme=dark] body.tx-guides main .card a{color:var(--ink)}
+html[data-tx-theme=dark] .cta{background:#0e2429;color:var(--ink)}
+html[data-tx-theme=dark] body.tx-article main .cta a{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+html[data-tx-theme=dark] .site-footer .brand img{mix-blend-mode:normal;filter:brightness(2.1) saturate(.55)}
+html[data-tx-theme=dark] body.tx-article .cta h2,html[data-tx-theme=dark] body.tx-article .cta p{color:var(--ink)}
