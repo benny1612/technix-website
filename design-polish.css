@@ -222,3 +222,4 @@ html[data-tx-theme=dark] .site-footer .brand img{mix-blend-mode:normal;filter:br
 html[data-tx-theme=dark] body.tx-article .cta h2,html[data-tx-theme=dark] body.tx-article .cta p{color:var(--ink)}
 /* Keep both controls on the first row when the mobile navigation expands. */
 @media(max-width:1150px){.site-header .menu-button,.js .site-header .menu-button,.tx-theme-toggle{top:39.275px}}
+html[data-tx-theme=dark] .site-header .header-phone{color:var(--paper)}
