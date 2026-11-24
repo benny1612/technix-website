@@ -6,40 +6,33 @@
  const dock=document.querySelector('.mobile-contact');
  const primary=document.querySelector('.hero-actions')||document.querySelector('main h1');
  const contact=document.querySelector('#contact')||document.querySelector('.site-footer');
- let primarySeen=true,contactSeen=false,dockTarget=false,dockTimer=0,dockFrame=0;
- function setDockVisible(show){
-  if(!dock||show===dockTarget)return;
-  dockTarget=show;clearTimeout(dockTimer);cancelAnimationFrame(dockFrame);
-  const reduced=matchMedia('(prefers-reduced-motion:reduce)').matches;
-  dock.inert=!show;dock.setAttribute('aria-hidden',String(!show));
-  if(show){
-   const wasHidden=dock.hidden;dock.hidden=false;
-   if(wasHidden&&!reduced){void dock.offsetHeight;dockFrame=requestAnimationFrame(()=>{if(dockTarget)dock.classList.add('is-visible');});}
-   else dock.classList.add('is-visible');
-  }else{
-   dock.classList.remove('is-visible');
-   if(reduced)dock.hidden=true;
-   else dockTimer=setTimeout(()=>{if(!dockTarget)dock.hidden=true;},300);
-  }
- }
+ let dockFrame=0;
+ const clamp=value=>Math.max(0,Math.min(1,value));
  function syncDock(){
   if(!dock)return;
   const accessibility=document.querySelector('.asw-menu');
   const accessibilityOpen=accessibility&&accessibility.parentElement.style.display!=='none';
   const editing=/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName);
-  const show=!primarySeen&&!contactSeen&&menu?.getAttribute('aria-expanded')!=='true'&&!accessibilityOpen&&!editing;
-  setDockVisible(show);document.documentElement.classList.toggle('tx-dock-visible',show);
+  const primaryBottom=primary?primary.getBoundingClientRect().bottom:0;
+  const contactTop=contact?contact.getBoundingClientRect().top:Infinity;
+  const allowed=menu?.getAttribute('aria-expanded')!=='true'&&!accessibilityOpen&&!editing&&matchMedia('(max-width:760px)').matches;
+  const reduced=matchMedia('(prefers-reduced-motion:reduce)').matches;
+  const progress=!allowed?0:reduced?(primaryBottom<=0&&contactTop>=innerHeight?1:0):Math.min(clamp(-primaryBottom/160),clamp((contactTop-innerHeight)/160));
+  dock.hidden=progress<=0;dock.inert=progress<1;dock.setAttribute('aria-hidden',String(progress<1));
+  const offset=`${(1-progress)*100}%`;if(dock.style.getPropertyValue('--dock-offset')!==offset)dock.style.setProperty('--dock-offset',offset);
+  dock.classList.toggle('is-visible',progress===1);
+  document.documentElement.classList.toggle('tx-dock-visible',progress>0);
  }
- if('IntersectionObserver' in window){
-  const observer=new IntersectionObserver(entries=>{for(const e of entries){if(e.target===primary)primarySeen=e.isIntersecting;if(e.target===contact)contactSeen=e.isIntersecting;}syncDock();},{threshold:0});
-  if(primary)observer.observe(primary);if(contact)observer.observe(contact);
- }
+ function queueDock(){if(dockFrame)return;dockFrame=requestAnimationFrame(()=>{dockFrame=0;syncDock();});}
+ window.addEventListener('scroll',queueDock,{passive:true});window.addEventListener('resize',queueDock);
+ matchMedia('(prefers-reduced-motion:reduce)').addEventListener('change',queueDock);
  if(menu)new MutationObserver(syncDock).observe(menu,{attributes:true,attributeFilter:['aria-expanded']});
  document.addEventListener('focusin',syncDock);document.addEventListener('focusout',()=>setTimeout(syncDock,0));
  document.addEventListener('click',()=>queueMicrotask(syncDock));
  // The widget is inserted after load; style changes tell us when its dialog opens.
  const widgetObserver=new MutationObserver(syncDock);
  widgetObserver.observe(document.body,{subtree:true,childList:true,attributes:true,attributeFilter:['style']});
+ syncDock();
  const rail=document.querySelector('.reviews-window');
  if(rail){
   const cards=[...rail.querySelectorAll('.review-card')],back=document.querySelector('[data-review-prev]'),next=document.querySelector('[data-review-next]'),status=document.querySelector('.reviews-status');
