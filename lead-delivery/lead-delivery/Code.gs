@@ -2,6 +2,7 @@
 // Script properties required: LEAD_ENABLED, LEAD_TOKEN, LEAD_RECIPIENT.
 // Sender is the Google account that deploys this script (Execute as: me, access: Anyone). Recipient lives only in LEAD_RECIPIENT.
 function escapeHtml(value){return String(value||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function formatReceived(value){var t=new Date(value);if(isNaN(t.getTime()))return String(value||'');return Utilities.formatDate(t,'Asia/Jerusalem','dd.MM.yyyy')+' בשעה '+Utilities.formatDate(t,'Asia/Jerusalem','HH:mm:ss')+' (שעון ישראל)'}
 function emailHtml(d){
   var number=d.phone.replace(/^\+/,'').replace(/^0/,'972');
   var isTest=/^(בדיקה|ניסוי)$/.test(String(d.name||'').trim());
@@ -14,7 +15,7 @@ function emailHtml(d){
   +'<div style="background:#fcfcf8;padding:8px 26px 26px;border-radius:0 0 20px 20px">'
   +'<table role="presentation" width="100%" style="margin:14px 0 0;border-collapse:separate;border-spacing:0"><tr>'+(isTest?dead('חיוג מהיר')+dead('וואטסאפ'):btn('#285e82','tel:+'+number,'חיוג מהיר')+btn('#172d32','https://wa.me/'+number,'וואטסאפ'))+'</tr></table>'+(isTest?'<p style="font-size:12px;color:#99462b;margin:10px 0 0">פנייה לבדיקה: כפתורי החיוג והוואטסאפ מושבתים.</p>':'')
   +'<table role="presentation" width="100%" style="border-collapse:collapse;margin-top:8px">'+row('שם',d.name,true)+row('טלפון',d.phone,true)+row('יישוב',d.town)+row('פרטי הפנייה',d.message)+'</table>'
-  +'<p style="font-size:12px;color:#53666a;line-height:1.7;margin:18px 0 0">התקבל: '+escapeHtml(d.received_at)+' | מזהה: '+escapeHtml(d.request_id)+'<br>הפרטים נמסרו על ידי הפונה ולא אומתו. אין להשיב למייל זה, יש לחזור ללקוח בטלפון או בוואטסאפ.</p>'
+  +'<p style="font-size:12px;color:#53666a;line-height:1.7;margin:18px 0 0">התקבל: '+escapeHtml(formatReceived(d.received_at))+' | מזהה: '+escapeHtml(d.request_id)+'<br>הפרטים נמסרו על ידי הפונה ולא אומתו. אין להשיב למייל זה, יש לחזור ללקוח בטלפון או בוואטסאפ.</p>'
   +'</div></div></body></html>';
 }
 function doPost(e){
@@ -33,7 +34,7 @@ function doPost(e){
     if(previous){var old=JSON.parse(previous);return out(old.status==='sent'?{ok:true}:{ok:false,error:'delivery_uncertain'})}
     p.setProperty(key,JSON.stringify({status:'sending',at:Date.now()}));
     try{
-      MailApp.sendEmail({to:to,subject:(/^(בדיקה|ניסוי)$/.test(String(d.name).trim())?'[בדיקה] ':'')+'טכניקס: פנייה חדשה מהאתר',body:['שם: '+d.name,'טלפון: '+d.phone,'יישוב: '+d.town,'פרטי הפנייה: '+d.message,'מקור: '+d.source,'מועד: '+d.received_at,'מזהה: '+d.request_id].join('\n'),htmlBody:emailHtml(d),name:'טכניקס | פניות מהאתר'});
+      MailApp.sendEmail({to:to,subject:(/^(בדיקה|ניסוי)$/.test(String(d.name).trim())?'[בדיקה] ':'')+'טכניקס: פנייה חדשה מהאתר',body:['שם: '+d.name,'טלפון: '+d.phone,'יישוב: '+d.town,'פרטי הפנייה: '+d.message,'מקור: '+d.source,'התקבל: '+formatReceived(d.received_at),'מזהה: '+d.request_id].join('\n'),htmlBody:emailHtml(d),name:'טכניקס | פניות מהאתר'});
       p.setProperty(key,JSON.stringify({status:'sent',at:Date.now()}));return out({ok:true});
     }catch(err){p.setProperty(key,JSON.stringify({status:'uncertain',at:Date.now()}));return out({ok:false,error:'delivery_uncertain'})}
   }finally{lock.releaseLock()}
