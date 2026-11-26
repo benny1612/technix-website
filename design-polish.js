@@ -78,3 +78,51 @@
  system.addEventListener('change',e=>{if(saved!=='dark'&&saved!=='light')apply(e.matches)});
  window.addEventListener('storage',e=>{if(e.key===key){saved=e.newValue;apply(saved==='dark'||(saved!=='light'&&system.matches))}});
 })();
+
+(function(){
+ if(document.querySelector('.tx-fab'))return;
+ const wa=document.querySelector('.mobile-contact a[href*="wa.me"],a[href*="wa.me/972587060190"]');
+ const call=document.querySelector('a[href^="tel:"]');
+ if(!wa||!call)return;
+ const waIcon='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.5 14.4c-.3-.1-1.8-.9-2-1-.3-.1-.5-.1-.7.1l-.9 1.2c-.2.2-.3.2-.6.1-1.6-.8-2.7-1.5-3.8-3.3-.3-.5.3-.5.8-1.6.1-.2 0-.4 0-.5l-.9-2.2c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.1.2 2.1 3.2 5.1 4.5 1.9.8 2.6.9 3.6.7.6-.1 1.8-.7 2-1.4.2-.7.2-1.3.2-1.4-.1-.1-.3-.2-.6-.3zM12 21.8c-1.8 0-3.5-.5-5-1.4l-.4-.2-3.7 1 1-3.6-.2-.4A9.8 9.8 0 1 1 12 21.8zM12 0C5.4 0 0 5.4 0 12c0 2.1.6 4.2 1.6 6L0 24l6.2-1.6A12 12 0 1 0 12 0z"/></svg>';
+ const callIcon='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg>';
+ const box=document.createElement('div');box.className='tx-fab';
+ box.innerHTML='<a class="tx-fab-opt tx-fab-call" href="'+call.getAttribute('href')+'">'+callIcon+'חייגו עכשיו</a><a class="tx-fab-opt tx-fab-wa" href="'+wa.getAttribute('href')+'" rel="noopener">'+waIcon+'וואטסאפ</a><button class="tx-fab-main" type="button" aria-expanded="false" aria-label="פתיחת אפשרויות יצירת קשר">'+waIcon+'</button>';
+ document.body.appendChild(box);
+ const main=box.querySelector('.tx-fab-main');
+ const set=open=>{box.classList.toggle('open',open);main.setAttribute('aria-expanded',String(open));main.setAttribute('aria-label',open?'סגירת אפשרויות יצירת קשר':'פתיחת אפשרויות יצירת קשר');};
+ main.addEventListener('click',e=>{e.stopPropagation();set(!box.classList.contains('open'));});
+ document.addEventListener('click',e=>{if(!box.contains(e.target))set(false);});
+ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&box.classList.contains('open')){set(false);main.focus();}});
+})();
+(function(){
+ const form=document.getElementById('contact-form');if(!form)return;
+ const status=document.getElementById('form-status'),btn=form.querySelector('button[type=submit]');
+ const phoneOk=v=>/^(?:0[23489]\d{7}|05\d{8}|\+972[23489]\d{7}|\+9725\d{8})$/.test(v.replace(/[\s().-]/g,''));
+ const say=(t,state,extra)=>{status.hidden=false;status.dataset.state=state;status.textContent=t;if(extra){status.append(' ');status.append(extra)}};
+ const fallback=()=>{const s=document.createDocumentFragment();const a=document.createElement('a');a.href='tel:+972587060190';a.textContent='058-7060190';s.append('אפשר להתקשר ל');s.append(a);s.append(' או לכתוב בוואטסאפ.');return s};
+ const newId=()=>{const b=new Uint8Array(16);crypto.getRandomValues(b);return Array.from(b,x=>x.toString(16).padStart(2,'0')).join('')};
+ let pending=null;
+ form.addEventListener('submit',async e=>{
+  e.preventDefault();
+  const f=form.elements,name=f.name.value.trim(),phone=f.phone.value.trim();
+  [f.name,f.phone].forEach(x=>x.removeAttribute('aria-invalid'));
+  if(!name){f.name.setAttribute('aria-invalid','true');f.name.focus();say('נא למלא שם.','error');return}
+  if(!phoneOk(phone)){f.phone.setAttribute('aria-invalid','true');f.phone.focus();say('נא למלא מספר טלפון ישראלי תקין.','error');return}
+  const payload={name,phone,town:f.town.value.trim(),message:f.message.value.trim(),_honey:f._honey.value};
+  const key=JSON.stringify(payload);
+  if(!pending||pending.key!==key)pending={key,id:newId()};
+  btn.disabled=true;say('שולחים…','info');
+  try{
+   const ctl=new AbortController(),t=setTimeout(()=>ctl.abort(),30000);
+   const r=await fetch('/api/lead',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...payload,request_id:pending.id}),signal:ctl.signal});
+   clearTimeout(t);
+   if(r.ok){form.reset();pending=null;say('תודה, הפנייה התקבלה. נחזור אליכם בהקדם.','ok');return}
+   if(r.status===503)say('הטופס עדיין לא פעיל.','error',fallback());
+   else if(r.status===429)say('נשלחו יותר מדי פניות. נסו שוב בעוד דקה.','error',fallback());
+   else if(r.status===400)say('בדקו את הפרטים ונסו שוב.','error');
+   else say('לא הצלחנו לאשר שהפנייה נשלחה. כדי לא לשלוח פעמיים, אפשר ללחוץ שוב או ליצור קשר ישירות.','error',fallback());
+  }catch(err){say('לא הצלחנו לאשר שהפנייה נשלחה.','error',fallback())}
+  finally{btn.disabled=false}
+ });
+})();
