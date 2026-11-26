@@ -33,7 +33,7 @@ export default {async fetch(request,env) {
   try{target=new URL(env.APPS_SCRIPT_URL);if(target.origin!=='https://script.google.com'||!/^\/macros\/s\/[^/]+\/exec$/.test(target.pathname))throw Error()}catch{return reply(503,'not_configured')}
   try{
     let result=await fetch(target.href,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...lead,token:env.LEAD_TOKEN,source:env.ALLOWED_ORIGIN,received_at:new Date().toISOString()}),redirect:'manual',signal:AbortSignal.timeout(25000)});
-    if(result.status===302||result.status===303){const u=new URL(result.headers.get('Location'));if(u.origin!=='https://script.googleusercontent.com')throw Error();result=await fetch(u.href,{redirect:'error',signal:AbortSignal.timeout(10000)})}
+    if(result.status===302||result.status===303){const u=new URL(result.headers.get('Location'));if(u.origin!=='https://script.googleusercontent.com')throw Error();result=await fetch(u.href,{redirect:'manual',signal:AbortSignal.timeout(10000)})}
     const body=await result.json();return result.ok&&body.ok===true?reply(200,'accepted'):reply(502,'delivery_not_confirmed');
   }catch{return reply(502,'delivery_not_confirmed')}
 }};
