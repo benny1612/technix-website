@@ -109,7 +109,7 @@
  const showDone=()=>{hideFb();status.hidden=true;form.style.display='none';let d=document.getElementById('form-done');if(!d){d=document.createElement('div');d.id='form-done';d.className='form-done';d.setAttribute('role','status');d.tabIndex=-1;d.innerHTML='<span class="done-icon"><svg class="done-bolt" viewBox="0 0 24 24" width="56" height="56" aria-hidden="true"><path class="bolt-line" d="M13 2 4.5 13.5H11L10 22l9.5-12H13z"/><path class="bolt-fill" d="M13 2 4.5 13.5H11L10 22l9.5-12H13z"/></svg><svg class="done-check" viewBox="0 0 24 24" width="56" height="56" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M7.5 12.5l3 3 6-6.5"/></svg></span><h3>הפנייה התקבלה בהצלחה</h3><p>אצור איתכם קשר בהקדם.</p>';form.after(d)}d.hidden=false;d.focus()};
  const newId=()=>{const b=new Uint8Array(16);crypto.getRandomValues(b);return Array.from(b,x=>x.toString(16).padStart(2,'0')).join('')};
  let pending=null;
- form.elements.consent.addEventListener('change',()=>{form.elements.consent.removeAttribute('aria-invalid')});
+ form.elements.consent.addEventListener('change',()=>{const c=form.elements.consent;c.removeAttribute('aria-invalid');if(c.checked&&status.dataset.state==='error'&&status.textContent.indexOf('לאשר יצירת קשר')>-1){status.hidden=true;status.textContent=''}});
  form.addEventListener('submit',async e=>{
   e.preventDefault();
   const f=form.elements,name=f.name.value.trim(),phone=f.phone.value.trim();
