@@ -2,8 +2,14 @@
   "name": "technix-website",
   "account_id": "2aa05ab22da41f32a5c09547108b728f",
   "compatibility_date": "2026-11-19",
+  "main": "worker.mjs",
   "assets": {
-    "directory": "."
+    "directory": ".",
+    "binding": "ASSETS",
+    "run_worker_first": ["/api/*"]
   },
+  "ratelimits": [
+    { "name": "LEAD_RATE_LIMITER", "namespace_id": "1001", "simple": { "limit": 5, "period": 60 } }
+  ],
   "previews": {}
 }

@@ -254,3 +254,16 @@ html:not([data-tx-theme=dark]) body.tx-article .cta h2,html:not([data-tx-theme=d
 }
 @media (prefers-reduced-motion:reduce){.tx-fab-main::after{animation:none}.tx-fab-opt{transition:none}}
 @media print{.tx-fab{display:none!important}}
+#contact-form{margin-top:44px;padding:32px;background:#fcfcf8;border:1px solid var(--rule);border-radius:20px;max-width:760px}
+#contact-form fieldset{margin-top:18px}
+@media(max-width:640px){#contact-form{padding:22px 18px}.form-row{grid-template-columns:1fr;gap:0}}
+html[data-tx-theme=dark] #contact-form{background:transparent}
+#contact-form .button{background:var(--ink);color:#fff;cursor:pointer}
+#contact-form .button[disabled]{opacity:.6;cursor:progress}
+#contact-form input:focus-visible,#contact-form textarea:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+#contact-form .hp-field{position:absolute;inset-inline-start:-9999px;width:1px;height:1px;overflow:hidden}
+#contact-form [aria-invalid=true]{border-bottom-color:var(--orange)}
+#contact-form .form-status{font-size:14px;margin-top:14px;color:var(--ink)}
+#contact-form .form-status[data-state=error]{color:var(--orange)}
+#contact-form .form-status a{color:inherit;text-decoration:underline}
+html[data-tx-theme=dark] #contact-form .button{background:#e6ebe5;color:#172d32}
