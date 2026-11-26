@@ -341,3 +341,6 @@ html[data-tx-theme=dark] #contact-form .consent input[type=checkbox]:checked::af
 #contact-form .consent input[type=checkbox][aria-invalid=true]:focus,#contact-form .consent input[type=checkbox][aria-invalid=true]:focus-visible{border-bottom-color:var(--orange)!important}
 html[data-tx-theme=dark] #contact-form .consent input[type=checkbox]{border-color:#e6ebe5!important}
 html[data-tx-theme=dark] #contact-form .consent input[type=checkbox]:checked{background-color:#e6ebe5}
+#contact-form .consent input[type=checkbox]:checked,#contact-form .consent input[type=checkbox]:checked:focus,#contact-form .consent input[type=checkbox]:checked:focus-visible{background:var(--ink)!important}
+#contact-form .consent input[type=checkbox]:not(:checked):focus,#contact-form .consent input[type=checkbox]:not(:checked):focus-visible{background:transparent!important}
+html[data-tx-theme=dark] #contact-form .consent input[type=checkbox]:checked,html[data-tx-theme=dark] #contact-form .consent input[type=checkbox]:checked:focus,html[data-tx-theme=dark] #contact-form .consent input[type=checkbox]:checked:focus-visible{background:#e6ebe5!important}
