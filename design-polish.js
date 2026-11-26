@@ -109,12 +109,14 @@
  const showDone=()=>{hideFb();status.hidden=true;form.style.display='none';let d=document.getElementById('form-done');if(!d){d=document.createElement('div');d.id='form-done';d.className='form-done';d.setAttribute('role','status');d.tabIndex=-1;d.innerHTML='<span class="done-icon"><svg class="done-bolt" viewBox="0 0 24 24" width="56" height="56" aria-hidden="true"><path class="bolt-line" d="M13 2 4.5 13.5H11L10 22l9.5-12H13z"/><path class="bolt-fill" d="M13 2 4.5 13.5H11L10 22l9.5-12H13z"/></svg><svg class="done-check" viewBox="0 0 24 24" width="56" height="56" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M7.5 12.5l3 3 6-6.5"/></svg></span><h3>הפנייה התקבלה בהצלחה</h3><p>אצור איתכם קשר בהקדם.</p>';form.after(d)}d.hidden=false;d.focus()};
  const newId=()=>{const b=new Uint8Array(16);crypto.getRandomValues(b);return Array.from(b,x=>x.toString(16).padStart(2,'0')).join('')};
  let pending=null;
+ form.elements.consent.addEventListener('change',()=>{const c=form.elements.consent;c.removeAttribute('aria-invalid');if(c.checked&&status.dataset.state==='error'&&status.textContent.indexOf('לאשר יצירת קשר')>-1){status.hidden=true;status.textContent=''}});
  form.addEventListener('submit',async e=>{
   e.preventDefault();
   const f=form.elements,name=f.name.value.trim(),phone=f.phone.value.trim();
-  [f.name,f.phone].forEach(x=>x.removeAttribute('aria-invalid'));
+  [f.name,f.phone,f.consent].forEach(x=>x.removeAttribute('aria-invalid'));
   if(!name){f.name.setAttribute('aria-invalid','true');f.name.focus();say('נא למלא שם.','error');return}
   if(!phoneOk(phone)){f.phone.setAttribute('aria-invalid','true');f.phone.focus();say('נא למלא מספר טלפון ישראלי תקין.','error');return}
+  if(!f.consent.checked){f.consent.setAttribute('aria-invalid','true');f.consent.focus();say('כדי להמשיך יש לאשר יצירת קשר.','error');return}
   const payload={name,phone,town:f.town.value.trim(),message:f.message.value.trim(),_honey:f._honey.value};
   const key=JSON.stringify(payload);
   if(!pending||pending.key!==key)pending={key,id:newId()};
@@ -129,6 +131,6 @@
    else if(r.status===400)say('בדקו את הפרטים ונסו שוב.','error');
    else {say('לא הצלחנו לאשר שהפנייה נשלחה. כדי לא לשלוח פעמיים, אפשר לנסות שוב או ליצור קשר ישירות.','error');showFb()}
   }catch(err){say('לא הצלחנו לאשר שהפנייה נשלחה.','error');showFb()}
-  finally{btn.disabled=false}
+  finally{btn.disabled=false;if(status.dataset.state==='error'&&!status.hidden&&!form.querySelector('[aria-invalid=true]')){status.tabIndex=-1;status.focus()}}
  });
 })();
