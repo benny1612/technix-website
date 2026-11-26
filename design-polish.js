@@ -99,8 +99,14 @@
  const form=document.getElementById('contact-form');if(!form)return;
  const status=document.getElementById('form-status'),btn=form.querySelector('button[type=submit]');
  const phoneOk=v=>/^(?:0[23489]\d{7}|05\d{8}|\+972[23489]\d{7}|\+9725\d{8})$/.test(v.replace(/[\s().-]/g,''));
- const say=(t,state,extra)=>{status.hidden=false;status.dataset.state=state;status.textContent=t;if(extra){status.append(' ');status.append(extra)}};
- const fallback=()=>{const s=document.createDocumentFragment();const a=document.createElement('a');a.href='tel:+972587060190';a.textContent='058-7060190';s.append('אפשר להתקשר ל');s.append(a);s.append(' או לכתוב בוואטסאפ.');return s};
+ const sendI='<svg class="bolt-send" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path class="bolt-line" d="M13 2 4.5 13.5H11L10 22l9.5-12H13z"/><path class="bolt-fill" d="M13 2 4.5 13.5H11L10 22l9.5-12H13z"/></svg>';
+ const say=(t,state,extra)=>{status.hidden=false;status.dataset.state=state;status.textContent=t;if(extra){status.append(' ');status.append(extra)}if(state==='info')status.insertAdjacentHTML('afterbegin',sendI)};
+ const waLink=document.querySelector('a[href*="wa.me/972587060190"]'),callLink=document.querySelector('a[href^="tel:"]');
+ const waI='<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.8-.9-2-1-.3-.1-.5-.1-.7.1l-.9 1.2c-.2.2-.3.2-.6.1-1.6-.8-2.7-1.5-3.8-3.3-.3-.5.3-.5.8-1.6.1-.2 0-.4 0-.5l-.9-2.2c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.1.2 2.1 3.2 5.1 4.5 1.9.8 2.6.9 3.6.7.6-.1 1.8-.7 2-1.4.2-.7.2-1.3.2-1.4-.1-.1-.3-.2-.6-.3zM12 21.8c-1.8 0-3.5-.5-5-1.4l-.4-.2-3.7 1 1-3.6-.2-.4A9.8 9.8 0 1 1 12 21.8zM12 0C5.4 0 0 5.4 0 12c0 2.1.6 4.2 1.6 6L0 24l6.2-1.6A12 12 0 1 0 12 0z"/></svg>';
+ const callI='<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="currentColor"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg>';
+ const hideFb=()=>{const x=document.getElementById('form-fallback');if(x)x.hidden=true};
+ const showFb=()=>{let x=document.getElementById('form-fallback');if(!x){x=document.createElement('div');x.id='form-fallback';x.className='form-fallback';x.innerHTML='<p>אפשר ליצור קשר ישירות:</p><div class="form-fallback-actions"><a class="button fb-call" href="'+(callLink?callLink.getAttribute('href'):'tel:+972587060190')+'">'+callI+'<span>חייגו עכשיו</span></a><a class="button button-dark fb-wa" rel="noopener" href="'+(waLink?waLink.getAttribute('href'):'https://wa.me/972587060190')+'">'+waI+'<span>שלחו הודעה בוואטסאפ</span></a></div>';status.after(x)}x.hidden=false};
+ const showDone=()=>{hideFb();status.hidden=true;form.style.display='none';let d=document.getElementById('form-done');if(!d){d=document.createElement('div');d.id='form-done';d.className='form-done';d.setAttribute('role','status');d.tabIndex=-1;d.innerHTML='<span class="done-icon"><svg class="done-bolt" viewBox="0 0 24 24" width="56" height="56" aria-hidden="true"><path class="bolt-line" d="M13 2 4.5 13.5H11L10 22l9.5-12H13z"/><path class="bolt-fill" d="M13 2 4.5 13.5H11L10 22l9.5-12H13z"/></svg><svg class="done-check" viewBox="0 0 24 24" width="56" height="56" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M7.5 12.5l3 3 6-6.5"/></svg></span><h3>הפנייה התקבלה בהצלחה</h3><p>אצור איתכם קשר בהקדם.</p>';form.after(d)}d.hidden=false;d.focus()};
  const newId=()=>{const b=new Uint8Array(16);crypto.getRandomValues(b);return Array.from(b,x=>x.toString(16).padStart(2,'0')).join('')};
  let pending=null;
  form.addEventListener('submit',async e=>{
@@ -112,17 +118,17 @@
   const payload={name,phone,town:f.town.value.trim(),message:f.message.value.trim(),_honey:f._honey.value};
   const key=JSON.stringify(payload);
   if(!pending||pending.key!==key)pending={key,id:newId()};
-  btn.disabled=true;say('שולחים…','info');
+  btn.disabled=true;hideFb();say('שולחים…','info');
   try{
    const ctl=new AbortController(),t=setTimeout(()=>ctl.abort(),30000);
    const r=await fetch('/api/lead',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...payload,request_id:pending.id}),signal:ctl.signal});
    clearTimeout(t);
-   if(r.ok){form.reset();pending=null;say('תודה, הפנייה התקבלה. נחזור אליכם בהקדם.','ok');return}
-   if(r.status===503)say('הטופס עדיין לא פעיל.','error',fallback());
-   else if(r.status===429)say('נשלחו יותר מדי פניות. נסו שוב בעוד דקה.','error',fallback());
+   if(r.ok){form.reset();pending=null;showDone();return}
+   if(r.status===503){say('לא הצלחנו לשלוח את הפנייה.','error');showFb()}
+   else if(r.status===429){say('נשלחו יותר מדי פניות. נסו שוב בעוד דקה.','error');showFb()}
    else if(r.status===400)say('בדקו את הפרטים ונסו שוב.','error');
-   else say('לא הצלחנו לאשר שהפנייה נשלחה. כדי לא לשלוח פעמיים, אפשר ללחוץ שוב או ליצור קשר ישירות.','error',fallback());
-  }catch(err){say('לא הצלחנו לאשר שהפנייה נשלחה.','error',fallback())}
+   else {say('לא הצלחנו לאשר שהפנייה נשלחה. כדי לא לשלוח פעמיים, אפשר לנסות שוב או ליצור קשר ישירות.','error');showFb()}
+  }catch(err){say('לא הצלחנו לאשר שהפנייה נשלחה.','error');showFb()}
   finally{btn.disabled=false}
  });
 })();
