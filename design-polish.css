@@ -319,4 +319,4 @@ html[data-tx-theme=dark] #contact-form .button{background:#e6ebe5;color:#172d32}
 .article-contact #contact-form .button:focus-visible{outline:3px solid #99462b;outline-offset:3px}
 .article-contact #contact-form .form-note{font-size:14px;line-height:1.7;color:#53666a;margin:18px 0 0}
 .article-contact #contact-form .form-note a{color:inherit;text-decoration:underline}
-.article-contact .form-fallback a.button{display:flex;align-items:center;justify-content:center;gap:10px;text-decoration:none;border-radius:999px;min-height:54px;padding:0 22px}
+.article-contact #contact-form .form-fallback a.button{display:flex;align-items:center;justify-content:center;gap:10px;width:auto;text-decoration:none;border-radius:999px;min-height:54px;padding:0 22px;margin-top:0;font-size:17px}
