@@ -7,11 +7,12 @@ function emailHtml(d){
   var isTest=/^(בדיקה|ניסוי)$/.test(String(d.name||'').trim());
   function row(l,v,big){return '<tr><td style="padding:14px 0;border-bottom:1px solid #ccd5d1"><div style="font-size:12px;color:#53666a;margin-bottom:4px">'+l+'</div><div style="font-size:'+(big?'20px;font-weight:bold':'16px')+';line-height:1.6;white-space:pre-wrap;overflow-wrap:anywhere;color:#172d32">'+escapeHtml(v||'לא נמסר')+'</div></td></tr>'}
   function btn(bg,href,label){return '<td style="padding:0 0 0 10px"><a href="'+href+'" style="display:block;background:'+bg+';color:#ffffff;text-decoration:none;font-weight:bold;font-size:16px;text-align:center;padding:14px 10px;border-radius:28px">'+label+'</a></td>'}
+  function dead(label){return '<td style="padding:0 0 0 10px"><span style="display:block;background:#b8c5bb;color:#5b6b66;font-weight:bold;font-size:16px;text-align:center;padding:14px 10px;border-radius:28px">'+label+'</span></td>'}
   return '<!doctype html><html lang="he" dir="rtl"><body style="margin:0;background:#f3f4ee;font-family:Arial,Helvetica,sans-serif;color:#172d32">'
   +'<div style="max-width:600px;margin:0 auto;padding:16px">'
   +'<div style="background:#172d32;color:#ffffff;border-radius:20px 20px 0 0;padding:22px 26px"><div style="font-size:13px;letter-spacing:1px;color:#e6c4b6">טכניקס שירותי חשמל</div><div style="font-size:26px;font-weight:bold;margin-top:6px">'+(isTest?'פנייה לבדיקה':'פנייה חדשה מהאתר')+'</div></div>'
   +'<div style="background:#fcfcf8;padding:8px 26px 26px;border-radius:0 0 20px 20px">'
-  +'<table role="presentation" width="100%" style="margin:14px 0 0;border-collapse:separate;border-spacing:0"><tr>'+btn('#285e82','tel:+'+number,'חיוג מהיר')+btn('#172d32','https://wa.me/'+number,'וואטסאפ')+'</tr></table>'
+  +'<table role="presentation" width="100%" style="margin:14px 0 0;border-collapse:separate;border-spacing:0"><tr>'+(isTest?dead('חיוג מהיר')+dead('וואטסאפ'):btn('#285e82','tel:+'+number,'חיוג מהיר')+btn('#172d32','https://wa.me/'+number,'וואטסאפ'))+'</tr></table>'+(isTest?'<p style="font-size:12px;color:#99462b;margin:10px 0 0">פנייה לבדיקה: כפתורי החיוג והוואטסאפ מושבתים.</p>':'')
   +'<table role="presentation" width="100%" style="border-collapse:collapse;margin-top:8px">'+row('שם',d.name,true)+row('טלפון',d.phone,true)+row('יישוב',d.town)+row('פרטי הפנייה',d.message)+'</table>'
   +'<p style="font-size:12px;color:#53666a;line-height:1.7;margin:18px 0 0">התקבל: '+escapeHtml(d.received_at)+' | מזהה: '+escapeHtml(d.request_id)+'<br>הפרטים נמסרו על ידי הפונה ולא אומתו. אין להשיב למייל זה, יש לחזור ללקוח בטלפון או בוואטסאפ.</p>'
   +'</div></div></body></html>';
