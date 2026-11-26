@@ -322,11 +322,11 @@ html[data-tx-theme=dark] #contact-form .button{background:#e6ebe5;color:#172d32}
 .article-contact #contact-form .form-fallback a.button{display:flex;align-items:center;justify-content:center;gap:10px;width:auto;text-decoration:none;border-radius:999px;min-height:54px;padding:0 22px;margin-top:0;font-size:17px}
 
 #contact-form .consent{display:flex;align-items:flex-start;gap:14px;margin:22px 0 20px}
-#contact-form .consent input[type=checkbox]{appearance:none;-webkit-appearance:none;flex:none;width:26px;height:26px;margin:2px 0 0;padding:0;border:1.5px solid var(--ink);border-radius:3px;background:transparent;cursor:pointer;position:relative}
+#contact-form .consent input[type=checkbox]{appearance:none;-webkit-appearance:none;flex:none;box-sizing:border-box;width:26px;height:26px;min-height:0;max-height:26px;margin:2px 0 0;padding:0;border:1.5px solid var(--ink);border-radius:3px;background:transparent;cursor:pointer;position:relative}
 #contact-form .consent input[type=checkbox]:checked{background:var(--ink)}
 #contact-form .consent input[type=checkbox]:checked::after{content:"";position:absolute;inset-block-start:3px;inset-inline-start:8px;width:7px;height:13px;border:solid #fcfcf8;border-width:0 2.5px 2.5px 0;transform:rotate(45deg)}
 #contact-form .consent input[type=checkbox]:focus-visible{outline:2px solid var(--blue);outline-offset:3px}
-#contact-form .consent input[type=checkbox][aria-invalid=true]{border-color:var(--orange);border-width:2.5px}
+#contact-form .consent input[type=checkbox][aria-invalid=true]{border:2.5px solid var(--orange)}
 #contact-form .consent-text{display:block}
 #contact-form .consent-main{display:block;margin:0;font-size:16px;line-height:1.6;font-weight:600;color:var(--ink);cursor:pointer}
 #contact-form .consent-main a{color:inherit;text-decoration:underline}
