@@ -129,6 +129,6 @@
    else if(r.status===400)say('בדקו את הפרטים ונסו שוב.','error');
    else {say('לא הצלחנו לאשר שהפנייה נשלחה. כדי לא לשלוח פעמיים, אפשר לנסות שוב או ליצור קשר ישירות.','error');showFb()}
   }catch(err){say('לא הצלחנו לאשר שהפנייה נשלחה.','error');showFb()}
-  finally{btn.disabled=false}
+  finally{btn.disabled=false;if(status.dataset.state==='error'&&!status.hidden&&!form.querySelector('[aria-invalid=true]')){status.tabIndex=-1;status.focus()}}
  });
 })();
