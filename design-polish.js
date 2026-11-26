@@ -112,9 +112,10 @@
  form.addEventListener('submit',async e=>{
   e.preventDefault();
   const f=form.elements,name=f.name.value.trim(),phone=f.phone.value.trim();
-  [f.name,f.phone].forEach(x=>x.removeAttribute('aria-invalid'));
+  [f.name,f.phone,f.consent].forEach(x=>x.removeAttribute('aria-invalid'));
   if(!name){f.name.setAttribute('aria-invalid','true');f.name.focus();say('נא למלא שם.','error');return}
   if(!phoneOk(phone)){f.phone.setAttribute('aria-invalid','true');f.phone.focus();say('נא למלא מספר טלפון ישראלי תקין.','error');return}
+  if(!f.consent.checked){f.consent.setAttribute('aria-invalid','true');f.consent.focus();say('כדי להמשיך יש לאשר יצירת קשר.','error');return}
   const payload={name,phone,town:f.town.value.trim(),message:f.message.value.trim(),_honey:f._honey.value};
   const key=JSON.stringify(payload);
   if(!pending||pending.key!==key)pending={key,id:newId()};
