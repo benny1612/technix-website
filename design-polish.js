@@ -95,3 +95,34 @@
  document.addEventListener('click',e=>{if(!box.contains(e.target))set(false);});
  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&box.classList.contains('open')){set(false);main.focus();}});
 })();
+(function(){
+ const form=document.getElementById('contact-form');if(!form)return;
+ const status=document.getElementById('form-status'),btn=form.querySelector('button[type=submit]');
+ const phoneOk=v=>/^(?:0[23489]\d{7}|05\d{8}|\+972[23489]\d{7}|\+9725\d{8})$/.test(v.replace(/[\s().-]/g,''));
+ const say=(t,state,extra)=>{status.hidden=false;status.dataset.state=state;status.textContent=t;if(extra){status.append(' ');status.append(extra)}};
+ const fallback=()=>{const s=document.createDocumentFragment();const a=document.createElement('a');a.href='tel:+972587060190';a.textContent='058-7060190';s.append('אפשר להתקשר ל');s.append(a);s.append(' או לכתוב בוואטסאפ.');return s};
+ const newId=()=>{const b=new Uint8Array(16);crypto.getRandomValues(b);return Array.from(b,x=>x.toString(16).padStart(2,'0')).join('')};
+ let pending=null;
+ form.addEventListener('submit',async e=>{
+  e.preventDefault();
+  const f=form.elements,name=f.name.value.trim(),phone=f.phone.value.trim();
+  [f.name,f.phone].forEach(x=>x.removeAttribute('aria-invalid'));
+  if(!name){f.name.setAttribute('aria-invalid','true');f.name.focus();say('נא למלא שם.','error');return}
+  if(!phoneOk(phone)){f.phone.setAttribute('aria-invalid','true');f.phone.focus();say('נא למלא מספר טלפון ישראלי תקין.','error');return}
+  const payload={name,phone,town:f.town.value.trim(),message:f.message.value.trim(),_honey:f._honey.value};
+  const key=JSON.stringify(payload);
+  if(!pending||pending.key!==key)pending={key,id:newId()};
+  btn.disabled=true;say('שולחים…','info');
+  try{
+   const ctl=new AbortController(),t=setTimeout(()=>ctl.abort(),30000);
+   const r=await fetch('/api/lead',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...payload,request_id:pending.id}),signal:ctl.signal});
+   clearTimeout(t);
+   if(r.ok){form.reset();pending=null;say('תודה, הפנייה התקבלה. נחזור אליכם בהקדם.','ok');return}
+   if(r.status===503)say('הטופס עדיין לא פעיל.','error',fallback());
+   else if(r.status===429)say('נשלחו יותר מדי פניות. נסו שוב בעוד דקה.','error',fallback());
+   else if(r.status===400)say('בדקו את הפרטים ונסו שוב.','error');
+   else say('לא הצלחנו לאשר שהפנייה נשלחה. כדי לא לשלוח פעמיים, אפשר ללחוץ שוב או ליצור קשר ישירות.','error',fallback());
+  }catch(err){say('לא הצלחנו לאשר שהפנייה נשלחה.','error',fallback())}
+  finally{btn.disabled=false}
+ });
+})();
