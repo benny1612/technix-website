@@ -1,6 +1,6 @@
-# Technix lead delivery, inactive preparation
+# Technix lead delivery
 
-Not deployed, not enabled, no email sent. The current website form remains disabled. No endpoint, recipient, sender account or secret was copied from Rachel.
+The form, the Worker (worker.mjs in the repo root, which supersedes lead-relay.mjs here) and Code.gs are built but inert: no Apps Script is deployed, no secrets exist, no email was sent. Until LEAD_DELIVERY_ENABLED is set the form tells visitors to call or use WhatsApp. No endpoint, recipient, sender account or secret was copied from Rachel.
 
 Reference checked: current api/lead.js in benny161299/Landing-page. Adapted design: same-origin server relay keeps the token out of the browser, then a separate Google Apps Script sends the email. Technix is a Cloudflare assets site, so the Vercel handler is not directly usable.
 
