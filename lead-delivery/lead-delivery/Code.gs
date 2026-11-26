@@ -1,11 +1,20 @@
 // Separate Technix Apps Script project, not Rachel's project. Do not deploy yet.
 // Script properties required: LEAD_ENABLED, LEAD_TOKEN, LEAD_RECIPIENT.
-// Sender is the Google account deploying this script. Obtain owner decision first.
+// Sender is the Google account that deploys this script (Execute as: me, access: Anyone). Recipient lives only in LEAD_RECIPIENT.
 function escapeHtml(value){return String(value||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
 function emailHtml(d){
-  var number=d.phone.replace(/^0/,'972').replace(/^\+/,'');
-  var rows=[['שם',d.name],['טלפון',d.phone],['יישוב',d.town],['פרטי הפנייה',d.message],['עמוד מקור',d.source],['מועד קבלה בשרת',d.received_at],['מזהה פנייה',d.request_id]];
-  return '<!doctype html><html lang="he" dir="rtl"><body style="margin:0;background:#f3f4ee;color:#172d32;font-family:Arial,sans-serif"><div style="max-width:600px;margin:24px auto;background:#fcfcf8;padding:28px;border-radius:20px"><p style="color:#99462b">טכניקס שירותי חשמל</p><h1 style="font-size:26px">פנייה חדשה מהאתר</h1><table role="presentation" style="width:100%;border-collapse:collapse">'+rows.map(function(r){return '<tr><th style="text-align:right;vertical-align:top;padding:12px;border-bottom:1px solid #ccd5d1">'+r[0]+'</th><td style="text-align:right;padding:12px;border-bottom:1px solid #ccd5d1;white-space:pre-wrap;overflow-wrap:anywhere">'+escapeHtml(r[1]||'לא נמסר')+'</td></tr>'}).join('')+'</table><p style="line-height:3"><a style="display:inline-block;background:#172d32;color:#fff;padding:3px 20px;border-radius:24px;text-decoration:none" href="tel:+'+number+'">חיוג לפונה</a> <a style="display:inline-block;background:#285e82;color:#fff;padding:3px 20px;border-radius:24px;text-decoration:none" href="https://wa.me/'+number+'">צ׳אט בוואטסאפ</a></p><p style="font-size:13px;color:#53666a">הפרטים נמסרו על ידי הפונה. אין להסתמך עליהם כאימות זהות. אין להשיב לכתובת המערכת.</p></div></body></html>';
+  var number=d.phone.replace(/^\+/,'').replace(/^0/,'972');
+  var isTest=/^(בדיקה|ניסוי)$/.test(String(d.name||'').trim());
+  function row(l,v,big){return '<tr><td style="padding:14px 0;border-bottom:1px solid #ccd5d1"><div style="font-size:12px;color:#53666a;margin-bottom:4px">'+l+'</div><div style="font-size:'+(big?'20px;font-weight:bold':'16px')+';line-height:1.6;white-space:pre-wrap;overflow-wrap:anywhere;color:#172d32">'+escapeHtml(v||'לא נמסר')+'</div></td></tr>'}
+  function btn(bg,href,label){return '<td style="padding:0 0 0 10px"><a href="'+href+'" style="display:block;background:'+bg+';color:#ffffff;text-decoration:none;font-weight:bold;font-size:16px;text-align:center;padding:14px 10px;border-radius:28px">'+label+'</a></td>'}
+  return '<!doctype html><html lang="he" dir="rtl"><body style="margin:0;background:#f3f4ee;font-family:Arial,Helvetica,sans-serif;color:#172d32">'
+  +'<div style="max-width:600px;margin:0 auto;padding:16px">'
+  +'<div style="background:#172d32;color:#ffffff;border-radius:20px 20px 0 0;padding:22px 26px"><div style="font-size:13px;letter-spacing:1px;color:#e6c4b6">טכניקס שירותי חשמל</div><div style="font-size:26px;font-weight:bold;margin-top:6px">'+(isTest?'פנייה לבדיקה':'פנייה חדשה מהאתר')+'</div></div>'
+  +'<div style="background:#fcfcf8;padding:8px 26px 26px;border-radius:0 0 20px 20px">'
+  +'<table role="presentation" width="100%" style="margin:14px 0 0;border-collapse:separate;border-spacing:0"><tr>'+btn('#285e82','tel:+'+number,'חיוג מהיר')+btn('#172d32','https://wa.me/'+number,'וואטסאפ')+'</tr></table>'
+  +'<table role="presentation" width="100%" style="border-collapse:collapse;margin-top:8px">'+row('שם',d.name,true)+row('טלפון',d.phone,true)+row('יישוב',d.town)+row('פרטי הפנייה',d.message)+'</table>'
+  +'<p style="font-size:12px;color:#53666a;line-height:1.7;margin:18px 0 0">התקבל: '+escapeHtml(d.received_at)+' | מזהה: '+escapeHtml(d.request_id)+'<br>הפרטים נמסרו על ידי הפונה ולא אומתו. אין להשיב למייל זה, יש לחזור ללקוח בטלפון או בוואטסאפ.</p>'
+  +'</div></div></body></html>';
 }
 function doPost(e){
   function out(x){return ContentService.createTextOutput(JSON.stringify(x)).setMimeType(ContentService.MimeType.JSON)}
@@ -23,7 +32,7 @@ function doPost(e){
     if(previous){var old=JSON.parse(previous);return out(old.status==='sent'?{ok:true}:{ok:false,error:'delivery_uncertain'})}
     p.setProperty(key,JSON.stringify({status:'sending',at:Date.now()}));
     try{
-      MailApp.sendEmail({to:to,subject:'טכניקס: פנייה חדשה מהאתר',body:['שם: '+d.name,'טלפון: '+d.phone,'יישוב: '+d.town,'פרטי הפנייה: '+d.message,'מקור: '+d.source,'מועד: '+d.received_at,'מזהה: '+d.request_id].join('\n'),htmlBody:emailHtml(d),name:'טכניקס | פניות מהאתר'});
+      MailApp.sendEmail({to:to,subject:(/^(בדיקה|ניסוי)$/.test(String(d.name).trim())?'[בדיקה] ':'')+'טכניקס: פנייה חדשה מהאתר',body:['שם: '+d.name,'טלפון: '+d.phone,'יישוב: '+d.town,'פרטי הפנייה: '+d.message,'מקור: '+d.source,'מועד: '+d.received_at,'מזהה: '+d.request_id].join('\n'),htmlBody:emailHtml(d),name:'טכניקס | פניות מהאתר'});
       p.setProperty(key,JSON.stringify({status:'sent',at:Date.now()}));return out({ok:true});
     }catch(err){p.setProperty(key,JSON.stringify({status:'uncertain',at:Date.now()}));return out({ok:false,error:'delivery_uncertain'})}
   }finally{lock.releaseLock()}
