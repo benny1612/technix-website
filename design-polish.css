@@ -296,3 +296,7 @@ html[data-tx-theme=dark] #contact-form .button{background:#e6ebe5;color:#172d32}
 @media(prefers-reduced-motion:reduce){.bolt-send .bolt-fill{animation:none;clip-path:inset(0)}.done-bolt{display:none}.done-check{opacity:1;animation:none}.done-check circle,.done-check path{animation:none;stroke-dashoffset:0}}
 .form-fallback a.button.fb-call{background:transparent!important;color:var(--ink)!important;border:1.5px solid var(--ink)!important}
 .form-fallback a.button{font-size:16px!important;font-weight:700}
+
+/* Form fields: underline-only focus, no rectangular outline. Keyboard focus stays visible as a thicker blue underline. */
+#contact-form input,#contact-form textarea{-webkit-tap-highlight-color:transparent}
+#contact-form input:focus,#contact-form input:focus-visible,#contact-form textarea:focus,#contact-form textarea:focus-visible{outline:none!important;outline-offset:0!important;box-shadow:0 2px 0 0 var(--blue)!important;border-bottom-color:var(--blue)!important;background:transparent!important}
