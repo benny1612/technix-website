@@ -300,3 +300,23 @@ html[data-tx-theme=dark] #contact-form .button{background:#e6ebe5;color:#172d32}
 /* Form fields: underline-only focus, no rectangular outline. Keyboard focus stays visible as a thicker blue underline. */
 #contact-form input,#contact-form textarea{-webkit-tap-highlight-color:transparent}
 #contact-form input:focus,#contact-form input:focus-visible,#contact-form textarea:focus,#contact-form textarea:focus-visible{outline:none!important;outline-offset:0!important;box-shadow:0 2px 0 0 var(--blue)!important;border-bottom-color:var(--blue)!important;background:transparent!important}
+
+/* Review author links: minimum 24px target */
+.review-author a{display:inline-block;min-height:24px;line-height:24px}
+/* Contact form on article pages: same open design as the home page */
+.article-contact{margin:44px 0;max-width:640px}
+.article-contact h2{margin:0 0 20px;font-size:clamp(24px,3.2vw,32px);line-height:1.3;color:#172d32}
+.article-contact #contact-form{background:transparent;border:0;padding:0;margin:0}
+.article-contact #contact-form,.article-contact #contact-form *{font-family:inherit;box-sizing:border-box}
+.article-contact #contact-form fieldset{border:0;padding:0;margin:0}
+.article-contact #contact-form label{display:block;font-size:15px;font-weight:600;color:#172d32;margin:0 0 4px}
+.article-contact #contact-form input,.article-contact #contact-form textarea{display:block;width:100%;min-height:44px;background:transparent;border:0;border-bottom:1.5px solid #8ea39b;border-radius:0;padding:10px 0;margin:0 0 28px;font-size:18px;line-height:1.5;color:#172d32;resize:vertical}
+.article-contact #contact-form input::placeholder,.article-contact #contact-form textarea::placeholder{color:#60736d;opacity:1}
+.article-contact .form-row{display:grid;grid-template-columns:1fr 1fr;gap:25px}
+@media(max-width:640px){.article-contact .form-row{grid-template-columns:1fr;gap:0}}
+.article-contact #contact-form .button{display:block;width:100%;min-height:54px;border:0;border-radius:999px;background:#172d32;color:#f3f4ee;font-size:18px;font-weight:700;cursor:pointer;margin-top:4px}
+.article-contact #contact-form .button:disabled{opacity:.6;cursor:default}
+.article-contact #contact-form .button:focus-visible{outline:3px solid #99462b;outline-offset:3px}
+.article-contact #contact-form .form-note{font-size:14px;line-height:1.7;color:#53666a;margin:18px 0 0}
+.article-contact #contact-form .form-note a{color:inherit;text-decoration:underline}
+.article-contact .form-fallback a.button{display:flex;align-items:center;justify-content:center;gap:10px;text-decoration:none;border-radius:999px;min-height:54px;padding:0 22px}
