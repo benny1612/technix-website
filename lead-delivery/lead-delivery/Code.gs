@@ -2,7 +2,7 @@
 // Script properties required: LEAD_ENABLED, LEAD_TOKEN, LEAD_RECIPIENT.
 // Sender is the Google account that deploys this script (Execute as: me, access: Anyone). Recipient lives only in LEAD_RECIPIENT.
 function escapeHtml(value){return String(value||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
-function formatReceived(value){var t=new Date(value);if(isNaN(t.getTime()))return String(value||'');return Utilities.formatDate(t,'Asia/Jerusalem','dd.MM.yyyy')+' בשעה '+Utilities.formatDate(t,'Asia/Jerusalem','HH:mm:ss')+' (שעון ישראל)'}
+function formatReceived(value){var t=new Date(value);if(isNaN(t.getTime()))return String(value||'');return Utilities.formatDate(t,'Asia/Jerusalem','dd/MM/yyyy')+' בשעה '+Utilities.formatDate(t,'Asia/Jerusalem','HH:mm:ss')+' (שעון ישראל)'}
 function emailHtml(d){
   var number=d.phone.replace(/^\+/,'').replace(/^0/,'972');
   var isTest=/^(בדיקה|ניסוי)$/.test(String(d.name||'').trim());
