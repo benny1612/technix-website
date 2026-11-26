@@ -334,3 +334,10 @@ html[data-tx-theme=dark] #contact-form .button{background:#e6ebe5;color:#172d32}
 html[data-tx-theme=dark] #contact-form .consent input[type=checkbox]{border-color:#e6ebe5}
 html[data-tx-theme=dark] #contact-form .consent input[type=checkbox]:checked{background:#e6ebe5}
 html[data-tx-theme=dark] #contact-form .consent input[type=checkbox]:checked::after{border-color:#172d32}
+#contact-form .consent input[type=checkbox]{border:1.5px solid var(--ink)!important;border-radius:3px!important;margin:2px 0 0!important;padding:0!important;min-height:0!important;background-color:transparent}
+#contact-form .consent input[type=checkbox]:checked{background-color:var(--ink)}
+#contact-form .consent input[type=checkbox][aria-invalid=true]{border:2.5px solid var(--orange)!important}
+#contact-form .consent input[type=checkbox]:focus,#contact-form .consent input[type=checkbox]:focus-visible{outline:2px solid var(--blue)!important;outline-offset:3px!important;box-shadow:none!important;border-bottom-color:var(--ink)!important}
+#contact-form .consent input[type=checkbox][aria-invalid=true]:focus,#contact-form .consent input[type=checkbox][aria-invalid=true]:focus-visible{border-bottom-color:var(--orange)!important}
+html[data-tx-theme=dark] #contact-form .consent input[type=checkbox]{border-color:#e6ebe5!important}
+html[data-tx-theme=dark] #contact-form .consent input[type=checkbox]:checked{background-color:#e6ebe5}
